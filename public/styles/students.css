@@ -207,7 +207,7 @@ body {
 }
 
 /* Responsive */
-@media (max-width: 720px) {
+/* @media (max-width: 720px) {
   .tabs {
     gap: 14px;
     flex-wrap: wrap;
@@ -233,5 +233,34 @@ body {
   .students td::before {
     content: attr(data-label);
     font-weight: 700;
+  }
+} */
+
+/* Mobile-first refinements */
+/* Mobile refinements */
+@media (max-width: 720px) {
+  .table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .students {
+    width: 100%;
+    min-width: 700px; /* Ensures horizontal scroll */
+    border-collapse: collapse;
+  }
+
+  .students th,
+  .students td {
+    padding: 8px 12px;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .students th:first-child,
+  .students td:first-child {
+    width: 40px;
+    text-align: center;
   }
 }

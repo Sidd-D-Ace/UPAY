@@ -1,6 +1,60 @@
 const User = require('../models/user');
 const db = require('../db/postgres'); // adjust if your postgres export is different
 
+
+// Add new Head (register + login + Postgres insert)
+async function registerHead(req, res) {
+  console.log(req.body);
+
+  if (req.body.role === 'head') {
+    const { role, name, age, gender, aadhar, education, email, password } = req.body;
+    const indianTime = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
+
+    // ✅ Validate required fields
+    if (!email || !password || !role || !name || !gender || !aadhar || !education || !age) {
+      console.log("Missing field!");
+      return res.status(400).send("Bad Request - Missing field(s).");
+    }
+
+    // ✅ Create auth user for login (Passport local-mongoose)
+    const newUser = new User({
+      username: email, // passport-local-mongoose uses "username"
+      email,
+      role
+    });
+
+    User.register(newUser, password, async (err, user) => {
+      if (err) {
+        if (err.name === 'UserExistsError') {
+          console.log("User already exists!");
+          return res.status(400).send("User already exists, please login instead.");
+        }
+        console.error("Registration error:", err);
+        return res.status(500).send("Something went wrong during signup.");
+      }
+
+      // ✅ Insert into Postgres (heads table)
+      try {
+        await db.query(
+          `INSERT INTO heads (name, username, email, join_date, status, gender, aadharno, education, age)
+           VALUES ($1, $2, $3, $4, 'Active', $5, $6, $7, $8)`,
+          [name, email, email, indianTime, gender, aadhar, education, age]
+        );
+
+        console.log("Head registered successfully!");
+        return res.redirect('/head/dashboard'); // redirect to Head dashboard
+      } catch (pgErr) {
+        console.error("Postgres insert error:", pgErr);
+        return res.status(500).send("Error saving Head to Postgres.");
+      }
+    });
+  } else {
+    return res.status(400).send("Invalid role.");
+  }
+}
+
+
+
 async function registerUser(req, res) {
   console.log(req.body);
 
@@ -140,4 +194,4 @@ async function registerStudent(req,res) {
 
 }
 
-module.exports = { registerUser , registerBranch, registerStudent};
+module.exports = { registerUser , registerBranch, registerStudent,registerHead};

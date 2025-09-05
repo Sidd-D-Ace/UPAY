@@ -117,7 +117,7 @@ body.page {
   outline: 2px solid #0000;
 }
 
-/* Responsive adjustments */
+
 @media (max-width: 1024px) {
   .grid {
     grid-template-columns: repeat(2, 1fr); /* 2 per row on tablets */
@@ -125,24 +125,21 @@ body.page {
   }
 }
 
-@media (max-width: 600px) {
-  .grid {
-    grid-template-columns: 1fr; /* single column on mobile */
-    gap: 14px;
+/* Mobile-first adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding: 12px; /* less horizontal padding */
   }
+
+  .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 22px 28px;
+}
+
 
   .field {
-    width: 100%;
-    text-align: left; /* better readability on narrow screens */
-  }
-
-  .tab {
-    font-size: 16px;
-    padding: 8px 12px;
-  }
-
-  .card {
-    padding: 20px 16px;
+    text-align: left;
   }
 
   .field label {
@@ -150,14 +147,54 @@ body.page {
   }
 
   .pill {
-    height: 40px; /* a bit taller for touch */
-    font-size: 14px;
+    height: 42px;
+    font-size: 15px;
+    padding: 8px 12px;
+  }
+
+  .card {
+    padding: 16px 14px;
+    border-radius: 12px;
+  }
+
+  .tab {
+    font-size: 16px;
+    padding: 8px;
+    border-radius: 12px 12px 0 0;
   }
 
   .btn {
-    width: 100%; /* button fills screen */
+    width: 100%; /* stretch buttons */
+    font-size: 16px;
     padding: 12px;
-    font-size: 15px;
-    margin-top: 10px;
+  }
+}
+
+@media (max-width: 600px) {
+  body::after {
+    content: "MOBILE MODE";
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background: red;
+    color: white;
+    font-size: 12px;
+    padding: 4px;
+    z-index: 9999;
+  }
+}
+
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: 1fr !important; /* force single column */
+    gap: 14px;
+  }
+
+  .card {
+    padding: 12px;
+  }
+
+  .btn {
+    width: 100%;
   }
 }

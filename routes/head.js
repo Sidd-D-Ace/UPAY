@@ -1,7 +1,7 @@
 const express=require('express');
 const router=express.Router();
 const ensureAuthenticated = require('../middleware/ensureAuthentication');
-const { registerUser , registerBranch, registerStudent} = require('../controllers/registerController');
+const { registerUser , registerBranch, registerStudent,registerHead} = require('../controllers/registerController');
 const checkRole=require('../middleware/checkRole');
 const db = require('../db/postgres');
 
@@ -11,12 +11,15 @@ const db = require('../db/postgres');
 
 
 
-
+router.post("/adduser", registerHead);
 router.post('/register-user', ensureAuthenticated, checkRole('head'), registerUser);
 router.post('/register-branch-head',ensureAuthenticated,checkRole('head'), registerUser);
 router.post('/register-branch',ensureAuthenticated, checkRole('head'), registerBranch);
 router.post('/register-student',ensureAuthenticated,checkRole('head'),registerStudent);
 
+router.get('/signup',(req,res)=>{
+  res.render('signup.ejs');
+});
 
 router.get('/dashboard',ensureAuthenticated, checkRole('head') ,async (req, res) => {
   try {
@@ -29,6 +32,10 @@ router.get('/dashboard',ensureAuthenticated, checkRole('head') ,async (req, res)
     res.render('dashboard/head-dashboard', { name: "Unknown" });
   }
 });
+
+
+
+
 
 router.get('/volunteer_form', ensureAuthenticated, checkRole('head'), async(req, res) => {
   try {
@@ -101,7 +108,8 @@ router.get("/student_list", ensureAuthenticated, checkRole("head"), async (req, 
 // Fetch students with status filter
 router.get("/api/students", async (req, res) => {
   try {
-    const { status } = req.query;
+    const { status, search } = req.query;
+
     let query = `
       SELECT 
         s.student_id, 
@@ -128,21 +136,33 @@ router.get("/api/students", async (req, res) => {
       ) a ON s.student_id = a.student_id
     `;
 
+    const values = [];
+    const conditions = [];
+
+    // Status filter
     if (status === "Active" || status === "Inactive") {
-      query += ` WHERE s.status = $1 ORDER BY s.student_id`;
-      const result = await db.query(query, [status]);
-      return res.json(result.rows);
+      conditions.push(`s.status = $${values.length + 1}`);
+      values.push(status);
     }
 
+    // Search filter
+    if (search) {
+      conditions.push(`s.name ILIKE $${values.length + 1}`);
+      values.push(`%${search}%`);
+    }
+
+    if (conditions.length) {
+      query += ` WHERE ${conditions.join(" AND ")}`;
+    }
+
+    // Sorting
     if (status === "Recent") {
       query += ` ORDER BY s.enrollment_date DESC`;
-      const result = await db.query(query);
-      return res.json(result.rows);
+    } else {
+      query += ` ORDER BY s.student_id`;
     }
 
-    // For "All" or no filter
-    query += ` ORDER BY s.student_id`;
-    const result = await db.query(query);
+    const result = await db.query(query, values);
     res.json(result.rows);
 
   } catch (err) {
@@ -150,6 +170,7 @@ router.get("/api/students", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 
 
 

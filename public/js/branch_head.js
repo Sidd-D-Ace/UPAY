@@ -26,17 +26,15 @@ document.addEventListener("DOMContentLoaded", () => {
       nextBatch.forEach((head, index) => {
         const row = document.createElement("tr");
         row.innerHTML = `
-  <td>${currentIndex + index + 1}</td>
-  <td>${head.name}</td>
-  <td>${head.age}</td>
-  <td>${head.gender}</td>
-  <td>${head.branch_name ?? '—'}</td>
-  <td class="ta-right">
-    <a href="/head/admins/${head.admin_id}" class="btn btn-sm btn-primary">View</a>
-  </td>
-`;
-
-
+          <td data-label="Sr no.">${currentIndex + index + 1}</td>
+          <td data-label="Name">${head.name}</td>
+          <td data-label="Age">${head.age}</td>
+          <td data-label="Gender">${head.gender}</td>
+          <td data-label="Branch">${head.branch_name ?? "—"}</td>
+          <td data-label="Action" class="ta-right">
+            <a href="/head/admins/${head.admin_id}" class="btn btn-sm btn-primary">View</a>
+          </td>
+        `;
         tableBody.appendChild(row);
       });
 

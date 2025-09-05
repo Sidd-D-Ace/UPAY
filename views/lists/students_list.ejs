@@ -15,10 +15,10 @@
       <section class="card">
         <div class="card-bar">
           <a href="<%= basePath %>/dashboard" class="icon-btn" aria-label="Go back">
-  <svg viewBox="0 0 24 24" aria-hidden="true">
-    <path d="M15 18l-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
-</a>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15 18l-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
 
           <h2 id="studentsHeading" class="card-title">List Of Students</h2>
 
@@ -65,13 +65,13 @@
                   <th scope="col" class="ta-right">Test Evaluation</th>
                 </tr>
               </thead>
-              <tbody id="studentsTableBody">
-                <!-- Rows will be rendered by students.js -->
-              </tbody>
+              <tbody id="studentsTableBody"></tbody>
             </table>
+
+            <!-- Spinner -->
             <div id="loadingSpinner" style="text-align:center; padding:10px; display:none;">
-    Loading...
-  </div>
+              Loading…
+            </div>
           </div>
         </div>
       </section>

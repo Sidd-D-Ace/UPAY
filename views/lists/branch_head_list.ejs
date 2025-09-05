@@ -1,3 +1,75 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UPAY Portal — Branch Heads</title>
+  <link rel="stylesheet" href="/styles/students.css" />
+</head>
+<body>
+  <header class="site-header">
+    <h1 class="title">UPAY Portal</h1>
+  </header>
+
+  <main class="page" role="main" aria-labelledby="branchHeadHeading">
+    <section class="card">
+      <div class="card-bar">
+        <a href="/head/dashboard" class="icon-btn" aria-label="Go back">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15 18l-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+
+        <h2 id="branchHeadHeading" class="card-title">Branch Heads</h2>
+
+        <a href="/head/admin_form" class="add-btn" aria-label="Add Branch Head">
+          <svg viewBox="0 0 24 24" class="plus" aria-hidden="true">
+            <path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <span>Add Branch Head</span>
+        </a>
+      </div>
+
+      <div class="panel"> -->
+        <!-- Filter Tabs -->
+        <!-- <nav class="tabs" aria-label="Branch Head filters">
+          <button class="tab filter-btn active" data-status="all">All</button>
+          <button class="tab filter-btn" data-status="Active">Active</button>
+          <button class="tab filter-btn" data-status="Inactive">Inactive</button>
+          <button class="tab filter-btn" data-status="Recent">Recent</button>
+        </nav> -->
+
+        <!-- Search -->
+        <!-- <div class="search-row">
+          <input id="branchHeadSearch" type="search" placeholder="Search Branch Head..." />
+        </div> -->
+
+        <!-- Table -->
+        <!-- <div class="table-wrap">
+          <table class="students">
+            <thead>
+              <tr>
+                <th>Sr no.</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Branch</th>
+                <th class="ta-right">Action</th>
+              </tr>
+            </thead>
+            <tbody id="branchHeadTableBody"> -->
+              <!-- Rows rendered by JS -->
+            <!-- </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main> -->
+
+  <!-- <script src="/js/branch_head.js"></script>
+</body>
+</html> -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,7 +130,28 @@
               </tr>
             </thead>
             <tbody id="branchHeadTableBody">
-              <!-- Rows rendered by JS -->
+              <!-- Example row with data-labels -->
+              <tr>
+                <td data-label="Sr no.">1</td>
+                <td data-label="Name">Suhani Rangari</td>
+                <td data-label="Age">20</td>
+                <td data-label="Gender">Female</td>
+                <td data-label="Branch">Branch1</td>
+                <td data-label="Action" class="ta-right">
+                  <a href="#" class="view-link">View</a>
+                </td>
+              </tr>
+              <tr>
+                <td data-label="Sr no.">2</td>
+                <td data-label="Name">Tushar Funde</td>
+                <td data-label="Age">20</td>
+                <td data-label="Gender">Male</td>
+                <td data-label="Branch">Branch2</td>
+                <td data-label="Action" class="ta-right">
+                  <a href="#" class="view-link">View</a>
+                </td>
+              </tr>
+              <!-- More rows can be dynamically rendered via JS or EJS -->
             </tbody>
           </table>
         </div>

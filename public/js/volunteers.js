@@ -1,15 +1,16 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const tableWrap = document.querySelector(".table-wrap");
   const tableBody = document.querySelector("#volunteersTableBody");
   const filterBtns = document.querySelectorAll(".filter-btn");
   const searchInput = document.querySelector("#volunteerSearch");
 
-  // Spinner
+  // Spinner inside table-wrap
   const spinner = document.createElement("div");
   spinner.textContent = "Loading…";
   spinner.style.textAlign = "center";
   spinner.style.padding = "10px";
   spinner.style.display = "none";
-  tableBody.parentNode.appendChild(spinner);
+  tableWrap.appendChild(spinner);
 
   let allVolunteers = [];
   let currentIndex = 0;
@@ -26,6 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setTimeout(() => {
       const nextBatch = allVolunteers.slice(currentIndex, currentIndex + batchSize);
+
       nextBatch.forEach((v, index) => {
         const row = document.createElement("tr");
         row.innerHTML = `
@@ -45,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
       currentIndex += batchSize;
       isLoading = false;
       spinner.style.display = "none";
-    }, 1000);
+    }, 600); // smoother than 1000ms
   }
 
   // Fetch volunteers
@@ -59,8 +61,10 @@ document.addEventListener("DOMContentLoaded", () => {
       let url = `/head/api/volunteers?status=${status}`;
       if (search) url += `&search=${encodeURIComponent(search)}`;
 
+      spinner.style.display = "block";
       const res = await fetch(url, { headers: { Accept: "application/json" } });
       allVolunteers = await res.json();
+      spinner.style.display = "none";
 
       if (allVolunteers.length === 0) {
         tableBody.innerHTML = `<tr><td colspan="7" style="text-align:center;">No volunteers found</td></tr>`;
@@ -70,6 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
       renderNextBatch();
     } catch (err) {
       console.error("Error fetching volunteers:", err);
+      spinner.style.display = "none";
     }
   }
 
@@ -80,8 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.classList.add("active");
 
       const status = btn.dataset.status;
-      const search = searchInput.value.trim();
-      fetchVolunteers(status, search);
+      fetchVolunteers(status, searchInput.value.trim());
     });
   });
 
@@ -90,11 +94,11 @@ document.addEventListener("DOMContentLoaded", () => {
     fetchVolunteers(currentStatus, searchInput.value.trim());
   });
 
-  // Infinite scroll
-  window.addEventListener("scroll", () => {
+  // Infinite scroll on .table-wrap
+  tableWrap.addEventListener("scroll", () => {
     if (
-      window.innerHeight + window.scrollY >=
-      document.body.offsetHeight - 100
+      tableWrap.scrollTop + tableWrap.clientHeight >=
+      tableWrap.scrollHeight - 50
     ) {
       if (currentIndex < allVolunteers.length) {
         renderNextBatch();
