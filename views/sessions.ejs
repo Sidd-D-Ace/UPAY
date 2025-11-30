@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UPAY Portal — Sessions</title>
+    <link rel="stylesheet" href="/styles/sessions.css" />
+  </head>
+  <body>
+    <header class="site-header" role="banner">
+      <h1 class="title">UPAY Portal</h1>
+    </header>
+
+    <main class="page" role="main" aria-labelledby="sessionsHeading">
+      <section class="card">
+        <div class="card-bar">
+          <!-- Back icon -->
+          <button class="icon-btn" aria-label="Go back" title="Back">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15 18l-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+          <h2 id="sessionsHeading" class="card-title">Sessions</h2>
+
+          <!-- Add session pill -->
+          <a href="#" class="add-btn" aria-label="Add Session">
+            <svg viewBox="0 0 24 24" class="plus" aria-hidden="true">
+              <path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span>Add Session</span>
+          </a>
+        </div>
+
+        <div class="panel">
+          <!-- Tabs -->
+          <nav class="tabs" aria-label="Session filters">
+            <a href="#" class="tab active" aria-current="page">Ongoing</a>
+          </nav>
+
+          <!-- Table -->
+          <div class="table-wrap" role="region" aria-label="Sessions table">
+            <table class="sessions">
+              <thead>
+  <tr>
+    <th scope="col">Sr no.</th>
+    <th scope="col">Topic</th>
+    <th scope="col">Conducted by</th>
+    <th scope="col">Branch</th>
+    <th scope="col">Subject</th>
+  </tr>
+</thead>
+<tbody>
+  <%
+    const fallback = [
+      { sr: 1, topic: 'skvhioshdc', conductedBy: 'Vol1', branch: 'branch1', subject: 'English' },
+      { sr: 2, topic: 'skvhioshdc', conductedBy: 'Vol2', branch: 'branch1', subject: 'Maths' },
+      { sr: 3, topic: 'skvhioshdc', conductedBy: 'Vol3', branch: 'branch1', subject: 'Physics' },
+      { sr: 4, topic: 'skvhioshdc', conductedBy: 'Vol4', branch: 'branch1', subject: 'English' }
+    ];
+    const rows = Array.isArray(sessions) && sessions.length ? sessions : fallback;
+  %>
+
+  <% rows.forEach((s, i) => { %>
+    <tr class="clickable-row" onclick="window.location.href='/head/sessions/mark-attendance/<%= s.session_id %>'">
+      <td data-label="Sr no."><%= s.sr ?? i + 1 %></td>
+      <td data-label="Topic"><%= s.topic %></td>
+      <td data-label="Conducted by"><%= s.conductedBy %></td>
+      <td data-label="Branch"><%= s.branch %></td>
+      <td data-label="Subject"><%= s.subject %></td>
+    </tr>
+  <% }) %>
+</tbody>
+
+
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

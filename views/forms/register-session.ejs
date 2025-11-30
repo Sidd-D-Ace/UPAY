@@ -24,7 +24,8 @@
       </div>
 
       <!-- Form body -->
-      <form method="post" action="register-session" enctype="multipart/form-data">
+      <form class="card" method="post" action="/<%= basePath %>/sessions/register-session" enctype="multipart/form-data">
+
         <div class="card-body">
           <div class="grid">
             
@@ -64,7 +65,7 @@
               <select id="subject" name="subject" class="pill" required>
                 <option value="">Choose Subject</option>
                 <% subjects.forEach(sub => { %>
-                  <option value="<%= sub.id %>"><%= sub.name %></option>
+                  <option value="<%= sub.subject_id %>"><%= sub.name %></option>
                 <% }); %>
               </select>
             </div>
