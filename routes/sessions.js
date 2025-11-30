@@ -129,16 +129,16 @@ router.get('/select-session', ensureAuthenticated, async (req, res) => {
   try {
     const query = `
       SELECT 
-  s.session_id,
-  s.topic,
-  v.name AS conductedBy,
-  b.branch_name AS branch,
-  sub.name AS subject
-FROM sessions s
-JOIN volunteers v ON s.conducted_by = v.volunteer_id
-JOIN branches b ON s.branch_id = b.branch_id
-JOIN subjects sub ON s.subject_id = sub.subject_id
-WHERE s.status = 'ongoing';
+      s.session_id,
+      s.topic,
+      v.name AS conductedBy,
+      b.branch_name AS branch,
+      sub.name AS subject
+    FROM sessions s
+    JOIN volunteers v ON s.conducted_by = v.volunteer_id
+    JOIN branches b ON s.branch_id = b.branch_id
+    JOIN subjects sub ON s.subject_id = sub.subject_id
+    WHERE s.status = 'ongoing';
 
     `;
     const { rows } = await db.query(query);
