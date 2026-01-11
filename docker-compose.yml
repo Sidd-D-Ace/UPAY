@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: upay-app
+    restart: always
+    ports:
+      - "80:3000"
+    environment:
+      - NODE_ENV=production
+      - SECRET=${SECRET}       # Reads from .env file
+      - DBPASSWORD=${DBPASSWORD} # Reads from .env file
+      # IMPORTANT: Overwrite localhost with service names
+      - DB_HOST=postgres       
+      - MONGO_HOST=mongo
+    depends_on:
+      - mongo
+      - postgres
+
+  mongo:
+    image: mongo:6.0
+    container_name: upay-mongo
+    restart: always
+    volumes:
+      - mongo_data:/data/db
+
+  postgres:
+    image: postgres:15
+    container_name: upay-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres  # Default user, or change if your app expects a specific user
+      POSTGRES_PASSWORD: ${DBPASSWORD}
+      POSTGRES_DB: upay
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      # This line automates your table creation:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  mongo_data:
+  pg_data:
